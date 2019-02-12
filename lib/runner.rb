@@ -13,4 +13,7 @@ locations = {
 
 stat_tracker = StatTracker.from_csv(locations)
 
-binding.pry
+games = StatTracker.new
+
+games.highest_total_score(stat_tracker)
+# binding.pry

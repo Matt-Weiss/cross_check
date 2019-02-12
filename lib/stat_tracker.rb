@@ -6,15 +6,20 @@ class StatTracker
   end
 
   def self.from_csv(locations)
-    @test = {}
+    @statistics = {}
     locations.each do |key, value|
-      # @test[key] = File.new(value).readlines
-      @test[key] = CSV.read(value)
+      @statistics[key] = CSV.table(value, Hash.new)
     end
-    @test
-    # binding.pry
+    @statistics
   end
 
-  
+  def highest_total_score(games)
+    goals_per_game = []
+    games[:games].each do |game|
+      # binding.pry
+      goals_per_game << (game[:away_goals] + game[:home_goals])
+    end
+    goals_per_game.max
+  end
 
 end
