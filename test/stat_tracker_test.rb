@@ -14,7 +14,6 @@ class StatTrackerTest < Minitest::Test
     }
 
     @stat_tracker = StatTracker.from_csv(locations)
-    @games = StatTracker.new
   end
 
   def test_it_exists
@@ -23,8 +22,5 @@ class StatTrackerTest < Minitest::Test
     assert_instance_of StatTracker, stat_tracker
   end
 
-  def test_highest_total_score
 
-    assert_equal 9, @games.highest_total_score(@stat_tracker)
-  end
 end
