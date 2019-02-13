@@ -1,4 +1,5 @@
 require './lib/stat_tracker'
+require 'pry'
 class GameStats < StatTracker
   def initialize
 
@@ -48,9 +49,20 @@ class GameStats < StatTracker
       if game[:away_goals] > game[:home_goals]
       winners += 1
         end
-        binding.pry
-
       end
     (100 * winners.to_f/@all_games.length).round(2)
   end
+
+  def count_of_games_by_season
+    @all_games[:season].inject({}) do |year_count, season|
+      if year_count[season]
+        year_count[season] += 1
+      else
+        year_count[season] = 1
+      end
+      year_count
+    end
+
+  end
+
 end
