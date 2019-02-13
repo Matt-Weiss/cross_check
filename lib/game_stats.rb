@@ -1,11 +1,11 @@
 require './lib/stat_tracker'
 class GameStats < StatTracker
-  def initialize
 
+  def initialize
     game_path = './data/game_test.csv'
     locations = {games: game_path}
-    @stat_tracker = StatTracker.from_csv(locations)
-    @all_games = @stat_tracker[:games]
+    stat_tracker = StatTracker.from_csv(locations)
+    @all_games = stat_tracker[:games]
   end
 
   def highest_total_score
@@ -46,7 +46,7 @@ class GameStats < StatTracker
     100 - percentage_home_wins
   end
 
-  def game_ids_by_season
+  def game_ids_by_season #helper
     seasons_hash = Hash.new {|hash, key| hash[key] = []}
     @all_games.each do |game|
       seasons_hash[game[:season]] << game[:game_id]
@@ -61,4 +61,21 @@ class GameStats < StatTracker
     end
     season_game_count
   end
+
+  def goals_per_game_by_season #helper
+    goals_hash = Hash.new {|hash, key| hash[key] = []}
+    @all_games.each do |game|
+      goals_hash[game[:season]] << (game[:home_goals] + game[:away_goals])
+    end
+    goals_hash
+  end
+
+  def average_goals_by_season
+    averages_hash = {}
+    goals_per_game_by_season.each do |key, value|
+      averages_hash[key] = (value.sum.to_f / value.count).round(2)
+    end
+    averages_hash
+  end
+
 end
