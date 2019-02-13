@@ -35,7 +35,12 @@ class GameStatsTest < Minitest::Test
     assert_equal 32.00, @games.percentage_visitor_wins
   end
 
-  def test_count_of_games_per_season
+  def test_gather_game_ids_by_season
+    skip
+    binding.pry
+  end
 
+  def test_count_of_games_by_season
+    assert_equal ({20122013 => 25}), @games.count_of_games_by_season
   end
 end

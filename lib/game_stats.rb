@@ -43,14 +43,22 @@ class GameStats < StatTracker
   end
 
   def percentage_visitor_wins
-    winners = 0
-    @all_games.each do |game|
-      if game[:away_goals] > game[:home_goals]
-      winners += 1
-        end
-        binding.pry
+    100 - percentage_home_wins
+  end
 
-      end
-    (100 * winners.to_f/@all_games.length).round(2)
+  def game_ids_by_season
+    seasons_hash = Hash.new {|hash, key| hash[key] = []}
+    @all_games.each do |game|
+      seasons_hash[game[:season]] << game[:game_id]
+    end
+    seasons_hash
+  end
+
+  def count_of_games_by_season
+    season_game_count = {}
+    game_ids_by_season.each do |key, value|
+      season_game_count[key] = value.count
+    end
+    season_game_count
   end
 end
