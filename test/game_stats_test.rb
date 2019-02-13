@@ -35,7 +35,10 @@ class GameStatsTest < Minitest::Test
     assert_equal 32.00, @games.percentage_visitor_wins
   end
 
-  def test_count_of_games_per_season
-
+  # def test_count_of_games_per_season
+  #
+  # end
+  def test_average_goals_per_game
+    assert_equal 2.48, @games.average_goals_per_game
   end
 end

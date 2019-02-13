@@ -1,4 +1,5 @@
 require './lib/stat_tracker'
+require 'pry'
 class GameStats < StatTracker
   def initialize
 
@@ -48,9 +49,19 @@ class GameStats < StatTracker
       if game[:away_goals] > game[:home_goals]
       winners += 1
         end
-        binding.pry
+        #inding.pry
 
       end
     (100 * winners.to_f/@all_games.length).round(2)
   end
+
+  def average_goals_per_game
+    total_scores = 0
+    @all_games.each do |game|
+      total_scores += (game[:away_goals] + game[:home_goals])
+      #binding.pry
+      end
+      (total_scores/50.00)
+
+    end
 end
