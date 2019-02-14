@@ -14,7 +14,6 @@ class StatTrackerTest < Minitest::Test
     }
 
     @stat_tracker = StatTracker.from_csv(locations)
-    # binding.pry
   end
 
   def test_it_exists
@@ -26,9 +25,7 @@ class StatTrackerTest < Minitest::Test
     skip
   end
 
-  def test_highest_total_score
-    @stat_tracker.highest_total_score
-  end
+
 
 
   # Test that StatTracker is loaded with game objects
