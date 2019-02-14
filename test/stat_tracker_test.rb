@@ -22,6 +22,15 @@ class StatTrackerTest < Minitest::Test
     assert_instance_of StatTracker, @stat_tracker
   end
 
+  def test_stat_tracker_holds_game_team_and_gameteam_objects
+    skip
+  end
+
+  def test_highest_total_score
+    @stat_tracker.highest_total_score
+  end
+
+
   # Test that StatTracker is loaded with game objects
 
 

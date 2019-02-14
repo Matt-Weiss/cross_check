@@ -1,5 +1,5 @@
 require './lib/stat_tracker'
-class GameStats < StatTracker
+class GameStats
 
   def initialize
     game_path = './data/game_test.csv'
@@ -10,7 +10,7 @@ class GameStats < StatTracker
 
   def highest_total_score
     goals_per_game = []
-    @all_games.each do |game|
+    @games.each do |game|
       goals_per_game << (game[:away_goals] + game[:home_goals])
     end
     goals_per_game.max
