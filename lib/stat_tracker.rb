@@ -44,5 +44,4 @@ class StatTracker
     goals_per_game.max
     binding.pry
   end
-
 end
