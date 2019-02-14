@@ -70,4 +70,13 @@ module GameStats
     end
     averages_hash
   end
+
+  def average_goals_per_game
+    total_scores = 0
+    games.each do |game|
+    total_scores += (game.away_goals + game.home_goals)
+    end
+    ((total_scores.to_f) / (games.count * 2)).round(2)
+  end
+
 end
