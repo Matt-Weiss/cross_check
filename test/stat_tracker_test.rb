@@ -14,13 +14,15 @@ class StatTrackerTest < Minitest::Test
     }
 
     @stat_tracker = StatTracker.from_csv(locations)
+    # binding.pry
   end
 
   def test_it_exists
-    stat_tracker = StatTracker.new
 
-    assert_instance_of StatTracker, stat_tracker
+    assert_instance_of StatTracker, @stat_tracker
   end
+
+  # Test that StatTracker is loaded with game objects
 
 
 end
