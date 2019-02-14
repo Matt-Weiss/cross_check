@@ -35,5 +35,7 @@ class StatTracker
       @game_teams << GameTeams.new(row)
     end
   end
+  def lode_game
+    @game.highest
 
 end
