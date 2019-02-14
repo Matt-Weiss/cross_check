@@ -13,7 +13,7 @@ class Teams
     @short_name = row["shortName"]
     @team_name = row["teamName"]
     @abbreviation = row["abbreviation"]
-    @link = row["Link"]
+    @link = row["link"]
   end
 
 end
