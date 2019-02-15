@@ -1,5 +1,5 @@
 require './test/test_helper'
-
+require 'pry'
 
 class LeagueAndSeasonStatsTest < Minitest::Test
 
@@ -22,6 +22,7 @@ class LeagueAndSeasonStatsTest < Minitest::Test
     assert_equal 33, @stat_tracker.count_of_teams
   end
 
+
   def test_find_goals_allowed #helper
     skip
     @stat_tracker.goals_allowed
@@ -40,4 +41,9 @@ class LeagueAndSeasonStatsTest < Minitest::Test
   end
 
 
+
+  def test_goals_allowed
+    binding.pry
+    assert_equal 12, @stat_tracker.best_offense
+  end
 end

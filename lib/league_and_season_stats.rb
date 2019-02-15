@@ -1,8 +1,11 @@
+require 'pry'
+
 module LeagueAndSeason
 
   def count_of_teams
     teams.count
   end
+
 
   def goals_allowed
     goals_allowed = Hash.new{|hash, key| hash[key] = []}
@@ -36,17 +39,35 @@ module LeagueAndSeason
     goals_scored_avg
   end
 
-  def highest_scoring_home_team
-    high_scoring_home_id = goals_scored_at_home.sort_by do |key, value|
+  def best_offense
+    goals_by_id = Hash.new{|hash, key| hash[key] = []}
+    game_teams.each do |game|
+      goals_by_id[game.team_id] << game.goals
+    end
+    sum_goals_by_id = Hash.new{|hash, key| hash[key] = []}
+    goals_by_id.each_key do |key|
+      sum_goals_by_id[key] << (goals_by_id[key].sum.to_f / goals_by_id[key].length).round(2)
+    end
+    sorted_goal_stats = sum_goals_by_id.sort_by do |key, value|
       value
     end.last
-    team_name_finder(high_scoring_home_id)
+    sorted_goal_stats
+    team_name_finder(sorted_goal_stats)
   end
 
   def team_name_finder(sorted_hash)
     team = teams.find do |team|
       team.team_id == sorted_hash[0]
-    end
+      end
     "#{team.short_name} #{team.team_name}"
+    end
+  end
+
+
+  def highest_scoring_home_team
+    high_scoring_home_id = goals_scored_at_home.sort_by do |key, value|
+      value
+    end.last
+    team_name_finder(high_scoring_home_id)
   end
 end
