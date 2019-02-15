@@ -1,7 +1,7 @@
 require 'csv'
 require './lib/game_stats'
 require './lib/league_and_season_stats'
-
+require 'pry'
 class StatTracker
   include GameStats
   include LeagueAndSeason
