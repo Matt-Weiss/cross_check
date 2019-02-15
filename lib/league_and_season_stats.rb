@@ -21,10 +21,7 @@ module LeagueAndSeason
     best_defense_id = goals_allowed.sort_by do |key, value|
       value
     end.first
-    best_defense_team_object = teams.select do |team|
-      team.team_id == best_defense_id[0]
-    end[0]
-    return "#{best_defense_team_object.short_name} #{best_defense_team_object.team_name}"
+    team_name_finder(best_defense_id)
   end
 
   def goals_scored_at_home
@@ -43,10 +40,13 @@ module LeagueAndSeason
     high_scoring_home_id = goals_scored_at_home.sort_by do |key, value|
       value
     end.last
-    high_scoring_home_object = teams.find do |team|
-      team.team_id == high_scoring_home_id[0]
-    end
-    return "#{high_scoring_home_object.short_name} #{high_scoring_home_object.team_name}"
+    team_name_finder(high_scoring_home_id)
   end
 
+  def team_name_finder(sorted_hash)
+    team = teams.find do |team|
+      team.team_id == sorted_hash[0]
+    end
+    "#{team.short_name} #{team.team_name}"
+  end
 end
