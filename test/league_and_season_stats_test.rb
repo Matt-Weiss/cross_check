@@ -15,11 +15,32 @@ class LeagueAndSeasonStatsTest < Minitest::Test
     }
 
     @stat_tracker = StatTracker.from_csv(locations)
+
   end
 
   def test_count_of_teams
     assert_equal 33, @stat_tracker.count_of_teams
   end
+
+
+  def test_find_goals_allowed #helper
+    skip
+    @stat_tracker.goals_allowed
+  end
+
+  def test_best_defense
+    assert_equal "Boston Bruins",  @stat_tracker.best_defense
+  end
+
+  def test_avg_goals_scored_at_home #helper
+    @stat_tracker.goals_scored_at_home
+  end
+
+  def test_highest_scoring_home_team
+    assert_equal "Ottawa Senators", @stat_tracker.highest_scoring_home_team
+  end
+
+
 
   def test_goals_allowed
     binding.pry

@@ -6,7 +6,6 @@ module GameStats
       goals_per_game << (game.away_goals + game.home_goals)
     end
     goals_per_game.max
-    # binding.pry
   end
 
   def lowest_total_score

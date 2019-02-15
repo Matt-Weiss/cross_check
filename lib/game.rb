@@ -6,7 +6,7 @@ class Game
               :away_team_id,
               :home_team_id,
               :away_goals,
-              :home_goals,
+              :home_goals, 
               :outcome
 
   def initialize(row)
