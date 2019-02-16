@@ -49,7 +49,7 @@ module GameStats
   def count_of_games_by_season
     season_game_count = {}
     game_ids_by_season.each do |key, value|
-      season_game_count[key.to_i] = value.count
+      season_game_count[key] = value.count
     end
     season_game_count
   end
@@ -65,7 +65,7 @@ module GameStats
   def average_goals_by_season
     averages_hash = {}
     goals_per_game_by_season.each do |key, value|
-      averages_hash[key.to_i] = (value.sum.to_f / value.count).round(2)
+      averages_hash[key] = (value.sum.to_f / value.count).round(2)
     end
     averages_hash
   end
@@ -75,7 +75,7 @@ module GameStats
     games.each do |game|
     total_scores += (game.away_goals + game.home_goals)
     end
-    ((total_scores.to_f) / (games.count * 2)).round(2)
+    ((total_scores.to_f) / (games.count)).round(2)
   end
 
 end
