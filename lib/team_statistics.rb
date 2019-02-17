@@ -69,4 +69,115 @@ module TeamStatistics
     sort_by_worst_win_percentage = average_win_percentage_by_season(team_id).sort_by {|key, value| value}
     sort_by_worst_win_percentage.first[0]
   end
+
+  def sum_of_games_played_by_team(team_id)
+    total_games = 0
+    games.each do |game|
+      if game.home_team_id == team_id || game.away_team_id == team_id
+        total_games += 1
+      end
+    end
+    total_games
+  end
+
+  def sum_away_wins(team_id)
+    wins = 0
+    games.each do |game|
+      if game.away_team_id == team_id && game.outcome.include?("away win")
+        wins += 1
+      end
+    end
+    wins
+  end
+
+  def sum_all_wins(team_id)
+    wins = 0
+    games.each do |game|
+      if game.home_team_id == team_id && game.outcome.include?("home win")
+        wins +=1
+      end
+    end
+    total_wins = wins + sum_away_wins(team_id)
+  end
+
+  def average_win_percentage(team_id)
+      win_percentage = (sum_all_wins(team_id).to_f /
+    sum_of_games_played_by_team(team_id)).round(2)
+    win_percentage
+  end
+
+  def most_goals_scored(team_id)
+    goals_by_team = []
+    games.each do |game|
+      if team_id == game.away_team_id
+        goals_by_team << game.away_goals
+      end
+      if team_id == game.home_team_id
+        goals_by_team << game.home_goals
+     end
+   end
+   goals_by_team.max
+  end
+
+  def fewest_goals_scored(team_id)
+      goals_by_team = []
+      games.each do |game|
+      if team_id == game.away_team_id
+        goals_by_team << game.away_goals
+      end
+      if team_id == game.home_team_id
+      goals_by_team << game.home_goals
+      end
+    end
+    goals_by_team.min
+  end
+
+  def favorite_opponent_wins(team_id)
+    home_wins = []
+    away_wins = []
+    games.each do |game|
+      if team_id == game.home_team_id && game.outcome.include?("home win")
+        home_wins << game.away_team_id
+      end
+      if team_id == game.away_team_id && game.outcome.include?("away win")
+        away_wins << game.home_team_id
+      end
+    end
+    total_wins_vs_opponent = home_wins + away_wins
+    total_wins_vs_opponent
+  end
+
+  def favorite_opponent_losses(team_id)
+    home_losses = []
+    away_losses = []
+    games.each do |game|
+      if team_id == game.home_team_id && game.outcome.include?("away win")
+        home_losses << game.away_team_id
+      end
+      if team_id == game.away_team_id && game.outcome.include?("home win")
+        away_losses << game.home_team_id
+      end
+    end
+    total_losses_vs_opponent = home_losses + away_losses
+    total_losses_vs_opponent
+  end
+
+  def total_games_vs_opponents(team_id)
+    games_per_opponent = favorite_opponent_wins(team_id) + favorite_opponent_losses(team_id)
+    games_per_opponent
+  end
+
+  def games_played_with_each_opponent(team_id)
+    teams_and_games = Hash.new {|hash, key| hash[key] = []}
+    total_games_vs_opponents(team_id).each do |team|
+    teams_and_games[team] << team
+  end
+  teams_and_games
+  end
 end
+
+
+
+
+# ["17", "17", "14", "14", "19", "19", "19", "17", "14", "14", "19"]
+#   ["17", "14", "17", "17", "14", "19", "19"]

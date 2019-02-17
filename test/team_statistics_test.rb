@@ -4,7 +4,7 @@ require 'pry'
 class TeamStatisticsTest < Minitest::Test
 
   def setup
-    game_path = './data/game.csv'
+    game_path = './data/game_test_new.csv'
     team_path = './data/team_info.csv'
     game_teams_path = './data/game_teams_stats_test.csv'
 
@@ -55,11 +55,60 @@ class TeamStatisticsTest < Minitest::Test
   end
 
   def test_best_season
+    skip
     assert_equal "20132014", @stat_tracker.best_season("6")
   end
 
   def test_worst_season
+    skip
     assert_equal "20142015", @stat_tracker.worst_season("6")
   end
 
+  def test_sum_of_games_played_by_team
+    skip
+    assert_equal 18, @stat_tracker.sum_of_games_played_by_team("16")
+  end
+
+  def test_sum_away_wins
+    skip
+    assert_equal 4, @stat_tracker.sum_away_wins("16")
+  end
+
+  def test_sum_all_wins
+    skip
+    assert_equal 11, @stat_tracker.sum_home_wins("16")
+  end
+
+  def test_average_win_percentage
+    skip
+    assert_equal 0.52, @stat_tracker.average_win_percentage("18")
+  end
+
+  def test_most_goals_scored
+    skip
+    assert_equal 9, @stat_tracker.most_goals_scored("18")
+  end
+
+  def test_fewest_goals_scored
+    skip
+    assert_equal 0, @stat_tracker.fewest_goals_scored("18")
+  end
+
+  def test_favorite_opponent_wins
+
+    assert_equal "Oilers", @stat_tracker.favorite_opponent_wins("16")
+  end
+
+  def test_favorite_opponent_losses
+
+    assert_equal "Oilers", @stat_tracker.favorite_opponent_losses("16")
+  end
+
+  def test_total_games_vs_opponents
+    assert_equal 6, @stat_tracker.total_games_vs_opponents("16")
+  end
+
+  def test_games_played_with_each_opponent
+    assert_equal 5, @stat_tracker.games_played_with_each_opponent("16")
+  end
 end
