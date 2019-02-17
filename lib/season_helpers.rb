@@ -97,4 +97,53 @@ module SeasonStatsHelpers
     full_season_sorted
   end
 
+  def accuracy_data(season)
+    accuracy_by_team = Hash.new {|hash, key| hash[key] = [0,0]}
+    game_teams.each do |game|
+      if all_games_in_season(season).include?(game.game_id)
+        accuracy_by_team[game.team_id][1] += game.shots
+        accuracy_by_team[game.team_id][0] += game.goals
+      end
+    end
+    accuracy_by_team
+  end
+
+  def accuracy_percentage(season)
+    accuracy_percentage = {}
+    (accuracy_data(season)).each do |key, value|
+      accuracy_percentage[key] = (value[0].to_f / value[1]).round(4)
+    end
+    accuracy_sorted = accuracy_percentage.sort_by do |key, value|
+      value
+    end
+    accuracy_sorted
+  end
+
+  def hits_data(season)
+    hits_by_team = Hash.new {|hash, key| hash[key] = [0]}
+    game_teams.each do |game|
+      if all_games_in_season(season).include?(game.game_id)
+        hits_by_team[game.team_id][0] += game.hits
+      end
+    end
+    hits_sorted = hits_by_team.sort_by do |key, value|
+      value
+    end
+    hits_sorted
+  end
+
+  def power_play_goal_data(season)
+    power_play_goals_data = Hash.new {|hash, key| hash[key] = [0,0]}
+    game_teams.each do |game|
+      if all_games_in_season(season).include?(game.game_id)
+        power_play_goals_data[season][1] += game.power_play_goals
+        power_play_goals_data[season][0] += game.goals
+      end
+    end
+    power_play_percentage = {}
+    power_play_goals_data.each do |key, value|
+      power_play_percentage[key] = (value[1].to_f / value[0]).round(2)
+    end
+    power_play_percentage[season]
+  end
 end
