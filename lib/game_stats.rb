@@ -31,11 +31,11 @@ module GameStats
       winners += 1
       end
     end
-    (100 * winners.to_f / games.length).round(2)
+    (winners.to_f / games.length).round(2)
   end
 
   def percentage_visitor_wins
-    100 - percentage_home_wins
+    (1 - percentage_home_wins).round(2)
   end
 
   def game_ids_by_season #helper
