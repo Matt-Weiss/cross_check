@@ -69,14 +69,14 @@ module LeagueStats
     team_name_finder(winningest_team)
   end
 
-  def best_fans
+  def best_fans #method 11
     best_fans = team_home_vs_away.sort_by do |key, value|
       value
     end.last
     team_name_finder(best_fans)
   end
 
-  def worst_fans
+  def worst_fans #method 12
     worst_fans = []
     teams_with_better_away_records.each do |key, value|
       worst_fans << team_name_finder([key])
