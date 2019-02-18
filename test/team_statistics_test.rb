@@ -145,6 +145,67 @@ class TeamStatisticsTest < Minitest::Test
   end
 
   def test_worst_loss
-    assert_equal 6, @stat_tracker.worst_loss("18")
+    skip
+    assert_equal 3, @stat_tracker.worst_loss("16")
+  end
+
+  def test_game_count
+    skip
+    assert_equal 5, @stat_tracker.game_count("16")
+  end
+
+  def test_sum_games_per_team
+    skip
+    assert_equal 33, @stat_tracker.sum_games_per_team("16")
+  end
+
+  def test_wins_against_all_teams
+    skip
+    assert_equal 3, @stat_tracker.wins_against_all_teams("16")
+  end
+
+  def test_win_percentage_by_team
+    skip
+    assert_equal 3, @stat_tracker.win_percentage_by_team("16")
+  end
+
+  def test_name_finder
+    assert_equal "Blackhawks", @stat_tracker.name_finder("16")
+  end
+
+  def test_head_to_head
+      expected = {
+      "Blues" => 0.47,
+      "Jets" => 0.55,
+      "Avalanche" => 0.63,
+      "Flames" => 0.44,
+      "Red Wings" => 0.29,
+      "Blue Jackets" => 0.6,
+      "Stars" => 0.52,
+      "Blackhawks" => 0.42,
+      "Wild" => 0.44,
+      "Devils" => 0.5,
+      "Canadiens" => 0.6,
+      "Canucks" => 0.5,
+      "Rangers" => 0.4,
+      "Lightning" => 0.7,
+      "Capitals" => 0.7,
+      "Sharks" => 0.6,
+      "Oilers" => 0.78,
+      "Ducks" => 0.48,
+      "Penguins" => 0.31,
+      "Islanders" => 0.4,
+      "Kings" => 0.61,
+      "Sabres" => 0.7,
+      "Coyotes" => 0.67,
+      "Bruins" => 0.5,
+      "Panthers" => 0.5,
+      "Maple Leafs" => 0.4,
+      "Senators" => 0.7,
+      "Hurricanes" => 0.3,
+      "Golden Knights" => 0.33,
+      "Flyers" => 0.5
+    }
+    assert_equal expected, @stat_tracker.head_to_head("18")
   end
 end

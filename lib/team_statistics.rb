@@ -101,7 +101,7 @@ module TeamStatistics
   end
 
   def average_win_percentage(team_id)
-      win_percentage = (sum_all_wins(team_id).to_f /
+      win_percentage = (sum_all_wins(team_id).to_f/
     sum_of_games_played_by_team(team_id)).round(2)
     win_percentage
   end
@@ -244,4 +244,81 @@ module TeamStatistics
     end
     lost_by.max
   end
+
+  def game_count(team_id)#helper method for head to head
+    gather_games = Hash.new {|hash, key| hash[key] = []}
+    games.each do |game|
+      if team_id == game.away_team_id
+      gather_games[game.home_team_id] << game.away_team_id
+      end
+      if team_id == game.home_team_id
+      gather_games[game.away_team_id] << game.home_team_id
+      end
+    end
+    gather_games
+  end
+
+  def sum_games_per_team(team_id)#second helper for head to head calculated total games played against all teams for given team id
+    game_sum = game_count(team_id)
+    game_sum.each do |key, value| game_sum[key] = value.length
+    end
+    game_sum
+  end
+
+  def wins_against_all_teams(team_id)
+    wins = Hash.new {|hash, key| hash[key] = [] }
+    games.each do |game|
+      if team_id == game.home_team_id && game.outcome.include?("home win")
+        wins[game.away_team_id] << game.home_team_id
+      end
+      if team_id == game.away_team_id && game.outcome.include?("away win")
+        wins[game.home_team_id] << game.away_team_id
+      end
+    end
+    wins.each do |key, value|
+      wins[key] = value.length
+    end
+    wins
+  end
+
+  def win_percentage_by_team(team_id)
+    game_sum = sum_games_per_team(team_id)
+    wins = wins_against_all_teams(team_id)
+    win_percentages = game_sum.merge(wins) {|key, games, wins| (wins.to_f / games).round(2)}
+  end
+
+  def name_finder(team_id)
+    team_name = []
+    teams.each do |team|
+      if team_id == team.team_id
+        team_name << team.team_name
+      end
+    end
+    team_name[0]
+  end
+
+  def head_to_head(team_id)
+    final_head_to_head = {}
+    team_win_percentage = win_percentage_by_team(team_id)
+    team_win_percentage.each do |key, value|
+      final_head_to_head[name_finder(key)] = value
+    end
+    final_head_to_head
+  end
+
+  
 end
+
+
+
+
+# def favorite_opponent(team_id)
+#     name = []
+#     opponent_id = return_id_of_favorite_opponent(team_id)
+#     teams.find do |team|
+#     if team.team_id == opponent_id
+#     name << team.team_name
+#     end
+#   end
+#   name[0]
+# end
