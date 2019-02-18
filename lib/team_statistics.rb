@@ -219,7 +219,29 @@ module TeamStatistics
     name[0]
   end
 
-  def biggest_blowout(team_id)
+  def biggest_team_blowout(team_id)
+    won_by = []
+    games.each do |game|
+      if team_id == game.away_team_id && game.outcome.include?("away win")
+      won_by << (game.away_goals - game.home_goals)
+      end
+      if team_id == game.home_team_id && game.outcome.include?("home win")
+      won_by << (game.home_goals - game.away_goals)
+      end
+    end
+    won_by.max
+  end
 
+  def worst_loss(team_id)
+    lost_by = []
+    games.each do |game|
+      if team_id == game.away_team_id && game.outcome.include?("home win")
+        lost_by << (game.home_goals - game.away_goals)
+      end
+      if team_id == game.home_team_id && game.outcome.include?("away win")
+        lost_by << (game.away_goals - game.home_goals)
+      end
+    end
+    lost_by.max
   end
 end

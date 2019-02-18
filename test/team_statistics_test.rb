@@ -4,7 +4,7 @@ require 'pry'
 class TeamStatisticsTest < Minitest::Test
 
   def setup
-    game_path = './data/game_test_new.csv'
+    game_path = './data/game.csv'
     team_path = './data/team_info.csv'
     game_teams_path = './data/game_teams_stats_test.csv'
 
@@ -135,9 +135,16 @@ class TeamStatisticsTest < Minitest::Test
   end
 
   def test_rival
+    skip
     assert_equal "Red Wings", @stat_tracker.rival("16")
   end
 
   def test_biggest_blowout
-    assert_equal 7, @stat_tracker.biggest_team_blowout("16")
+    skip
+    assert_equal 7, @stat_tracker.biggest_team_blowout("18")
+  end
+
+  def test_worst_loss
+    assert_equal 6, @stat_tracker.worst_loss("18")
+  end
 end
