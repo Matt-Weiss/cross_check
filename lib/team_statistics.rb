@@ -167,17 +167,59 @@ module TeamStatistics
     games_per_opponent
   end
 
-  def games_played_with_each_opponent(team_id)
+  def game_total_each_opponent(team_id) #returns a hash with team id as key, and each value represents total games played with team_id argument
     teams_and_games = Hash.new {|hash, key| hash[key] = []}
     total_games_vs_opponents(team_id).each do |team|
     teams_and_games[team] << team
   end
+  teams_and_games.each {|key, value| teams_and_games[key] = value.length}
   teams_and_games
   end
+
+  def wins_for_each_opponent(team_id)
+    opponent_wins_key = Hash.new {|hash, key| hash[key] = []}
+    favorite_opponent_losses(team_id).each do |team|
+      opponent_wins_key[team] << team
+    end
+    opponent_wins_key.each {|key, value| opponent_wins_key[key] = value.length}
+    opponent_wins_key
+  end
+
+  def opponent_win_percentage(team_id)
+    win_percentage = game_total_each_opponent(team_id).merge(wins_for_each_opponent(team_id)) {|key, games, wins| (wins.to_f/games).round(2) * 100}
+    win_percentage
+  end
+
+  def return_id_of_favorite_opponent(team_id)
+    sorted_percentages = opponent_win_percentage(team_id).sort_by {|key, value| value}
+    opponent_id = sorted_percentages.first[0]
+    opponent_id
+  end
+
+  def favorite_opponent(team_id)
+      name = []
+      opponent_id = return_id_of_favorite_opponent(team_id)
+      teams.find do |team|
+      if team.team_id == opponent_id
+      name << team.team_name
+      end
+    end
+    name[0]
+  end
+
+  def rival(team_id)
+    name = []
+    sorted_percentages = opponent_win_percentage(team_id).sort_by {|key, value| value}
+    opponent_id = sorted_percentages.last[0]
+    teams.find do |team|
+      if team.team_id == opponent_id
+        name << team.team_name
+      end
+    end
+    name[0]
+  end
+
+  def biggest_blowout(team_id)
+
+  end
 end
-
-
-
-
-# ["17", "17", "14", "14", "19", "19", "19", "17", "14", "14", "19"]
-#   ["17", "14", "17", "17", "14", "19", "19"]

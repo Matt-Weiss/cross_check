@@ -95,20 +95,49 @@ class TeamStatisticsTest < Minitest::Test
   end
 
   def test_favorite_opponent_wins
-
+    skip
     assert_equal "Oilers", @stat_tracker.favorite_opponent_wins("16")
   end
 
   def test_favorite_opponent_losses
-
+    skip
     assert_equal "Oilers", @stat_tracker.favorite_opponent_losses("16")
   end
 
   def test_total_games_vs_opponents
+    skip
     assert_equal 6, @stat_tracker.total_games_vs_opponents("16")
   end
 
-  def test_games_played_with_each_opponent
-    assert_equal 5, @stat_tracker.games_played_with_each_opponent("16")
+  def test_game_total_each_opponent
+    skip
+    assert_equal 5, @stat_tracker.game_total_each_opponent("16")
   end
+
+  def test_wins_for_each_opponent
+    skip
+    assert_equal 33, @stat_tracker.wins_for_each_opponent("16")
+  end
+
+  def test_opponent_win_percentage
+    skip
+    assert_equal 22, @stat_tracker.opponent_win_percentage("16")
+  end
+
+  def test_return_id_of_favorite_opponent
+    skip
+    assert_equal "19", @stat_tracker.return_id_of_favorite_opponent("16")
+  end
+
+  def test_favorite_opponent
+    skip
+    assert_equal "Oilers", @stat_tracker.favorite_opponent("18")
+  end
+
+  def test_rival
+    assert_equal "Red Wings", @stat_tracker.rival("16")
+  end
+
+  def test_biggest_blowout
+    assert_equal 7, @stat_tracker.biggest_team_blowout("16")
 end
