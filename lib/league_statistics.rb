@@ -1,4 +1,4 @@
-module LeagueAndSeason
+module LeagueStats
 
   def count_of_teams #method 1
     teams.count
@@ -59,7 +59,7 @@ module LeagueAndSeason
     low_scoring_home_id = goals_scored_at_home.sort_by do |key, value|
       value
     end.first
-    binding.pry
+
     team_name_finder(low_scoring_home_id)
   end
 
