@@ -306,19 +306,82 @@ module TeamStatistics
     final_head_to_head
   end
 
-  
+
+  def games_per_regular_season(team_id)
+    collect_games = Hash.new {|hash, key| hash[key] = []}
+    games.each do |game|
+      collect_games[game.season] << team_id if game.home_team_id == team_id && game.type.include?("R")
+      collect_games[game.season] << team_id if game.away_team_id == team_id && game.type.include?("R")
+      end
+      collect_games.each do |key, value|
+      collect_games[key] = value.length
+    end
+    collect_games
+  end
+
+  def games_per_preseason(team_id)
+    collect_games = Hash.new {|hash, key| hash[key] = []}
+    games.each do |game|
+      collect_games[game.season] << team_id if game.away_team_id == team_id && game.type.include?("P")
+      collect_games[game.season] << team_id if game.home_team_id == team_id && game.type.include?("P")
+    end
+    collect_games.each do |key, value|
+      collect_games[key] = value.length
+    end
+    collect_games
+  end
+
+  def wins_per_regular_season(team_id)
+    wins = Hash.new {|hash, key| hash[key] = []}
+    games.each do |game|
+      wins[game.season] << team_id if game.home_team_id == team_id && game.outcome.include?("home win") && game.type.include?("R")
+      wins[game.season] << team_id if game.away_team_id == team_id && game.outcome.include?("away win") && game.type.include?("R")
+    end
+    wins.each do |key, value|
+      wins[key] = value.length
+    end
+    wins
+  end
+
+  def wins_per_preseason(team_id)
+    wins = Hash.new {|hash, key| hash[key] = []}
+    games.each do |game|
+      wins[game.season] << team_id if game.home_team_id == team_id && game.outcome.include?("home win") && game.type.include?("P")
+      wins[game.season] << team_id if game.away_team_id == team_id && game.outcome.include?("away win") && game.type.include?("P")
+    end
+    wins.each do |key, value|
+      wins[key] = value.length
+    end
+    wins
+  end
+
+  def win_percentage_per_regular_season(team_id)
+    games = games_per_regular_season(team_id)
+    wins = wins_per_regular_season(team_id)
+    win_percentage = games.merge(wins) do |key, games, wins|
+      (wins.to_f / games).round(2)
+    end
+    win_percentage
+  end
+
+  def win_percentage_per_preseason(team_id)
+    games = games_per_preseason(team_id)
+    wins = wins_per_preseason(team_id)
+    win_percentage = games.merge(wins) do |key, games, wins|
+      (wins.to_f / games).round(2)
+    end
+    win_percentage
+  end
+
+  def total_goals_scored_by_season(team_id)
+    goals = Hash.new {|hash, key| hash[key] = []}
+    games.each do |game|
+      goals[game.season] << game.home_goals if game.home_team_id == team_id && game.type.include?("P")
+      goals[game.season] << game.away_goals if game.away_team_id == team_id && game.type.include?("P")
+    end
+    goals
+    binding.pry
+  end
+
+
 end
-
-
-
-
-# def favorite_opponent(team_id)
-#     name = []
-#     opponent_id = return_id_of_favorite_opponent(team_id)
-#     teams.find do |team|
-#     if team.team_id == opponent_id
-#     name << team.team_name
-#     end
-#   end
-#   name[0]
-# end

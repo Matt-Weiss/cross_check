@@ -4,7 +4,7 @@ require 'pry'
 class TeamStatisticsTest < Minitest::Test
 
   def setup
-    game_path = './data/game.csv'
+    game_path = './data/game_test_preseason_and_regular_season.csv'
     team_path = './data/team_info.csv'
     game_teams_path = './data/game_teams_stats_test.csv'
 
@@ -170,10 +170,12 @@ class TeamStatisticsTest < Minitest::Test
   end
 
   def test_name_finder
+    skip
     assert_equal "Blackhawks", @stat_tracker.name_finder("16")
   end
 
   def test_head_to_head
+
       expected = {
       "Blues" => 0.47,
       "Jets" => 0.55,
@@ -207,5 +209,34 @@ class TeamStatisticsTest < Minitest::Test
       "Flyers" => 0.5
     }
     assert_equal expected, @stat_tracker.head_to_head("18")
+  end
+
+  def test_games_per_regular_season
+    assert_equal 45, @stat_tracker.games_per_regular_season("16")
+  end
+
+  def test_games_per_preseason
+    assert_equal 45, @stat_tracker.games_per_preseason("16")
+  end
+
+  def test_wins_per_regular_season
+    assert_equal 32, @stat_tracker.wins_per_regular_season("16")
+  end
+
+  def test_wins_per_preseason
+    assert_equal 2, @stat_tracker.win_percentage_per_preseason("16")
+  end
+
+  def test_win_percentage_per_regular_season
+    assert_equal 72, @stat_tracker.win_percentage_per_regular_season("16")
+  end
+
+  def test_win_percentage_per_preseason
+    assert_equal 55, @stat_tracker.win_percentage_per_preseason("16")
+  end
+
+
+  def test_total_goals_scored_by_season
+    assert_equal 22, @stat_tracker.total_goals_scored_by_season("16")
   end
 end
