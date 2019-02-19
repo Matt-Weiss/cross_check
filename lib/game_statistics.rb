@@ -32,7 +32,7 @@ module GameStatistics
       end
     end
 
-    (100 * winners.to_f / games.length).round(2)
+    (winners.to_f / games.length).round(2)
   end
 
   def percentage_visitor_wins

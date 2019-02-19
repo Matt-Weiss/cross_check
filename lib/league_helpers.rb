@@ -1,4 +1,4 @@
-module LeagueStatsHelpers
+module LeagueStatisticsHelpers
 
   def all_goals_scored #helper for 2 and 3
     goals_by_id = Hash.new{|hash, key| hash[key] = []}

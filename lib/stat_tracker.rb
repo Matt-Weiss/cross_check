@@ -15,7 +15,7 @@ require_relative './season_helpers'
 require 'pry'
 
 class StatTracker
-  include GameStats
+  include GameStatistics
   include LeagueStatistics
   include LeagueStatisticsHelpers
   include TeamStatistics

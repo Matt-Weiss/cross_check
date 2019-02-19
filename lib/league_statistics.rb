@@ -59,7 +59,6 @@ module LeagueStatistics
     low_scoring_home_id = goals_scored_at_home.sort_by do |key, value|
       value
     end.first
-
     team_name_finder(low_scoring_home_id)
   end
 
