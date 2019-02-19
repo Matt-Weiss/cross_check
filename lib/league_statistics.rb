@@ -1,4 +1,4 @@
-module LeagueStats
+module LeagueStatistics
 
   def count_of_teams #method 1
     teams.count
