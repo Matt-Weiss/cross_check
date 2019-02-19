@@ -1,7 +1,7 @@
 require './test/test_helper'
 require 'pry'
 
-class LeagueAndSeasonStatsTest < Minitest::Test
+class LeagueStatsTest < Minitest::Test
 
   def setup
     game_path = './data/game_test.csv'

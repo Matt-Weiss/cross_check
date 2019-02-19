@@ -1,4 +1,4 @@
-module GameStats
+module GameStatistics
 
   def highest_total_score
     goals_per_game = []
@@ -31,7 +31,8 @@ module GameStats
       winners += 1
       end
     end
-    (winners.to_f / games.length).round(2)
+
+    (100 * winners.to_f / games.length).round(2)
   end
 
   def percentage_visitor_wins
