@@ -17,18 +17,13 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_exists
-
     assert_instance_of StatTracker, @stat_tracker
   end
 
   def test_stat_tracker_holds_game_team_and_gameteam_objects
-    skip
+    assert_instance_of Game, @stat_tracker.games[0]
+    assert_instance_of Teams, @stat_tracker.teams[0]
+    assert_instance_of GameTeams, @stat_tracker.game_teams[0]
   end
-
-
-
-
-  # Test that StatTracker is loaded with game objects
-
 
 end

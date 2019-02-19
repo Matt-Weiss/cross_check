@@ -1,7 +1,13 @@
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter 'test'
+end
+
 require "rake/testtask"
 
-task default: %w[test]
+task :default => :test
 
-Rake::TestTask.new do |task|
-  task.pattern = "./test/*_test.rb"
+task :test do
+ Dir.glob('./test/*_test.rb').each { |file| require file}
 end

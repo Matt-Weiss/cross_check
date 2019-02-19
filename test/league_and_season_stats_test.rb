@@ -22,46 +22,47 @@ class LeagueAndSeasonStatsTest < Minitest::Test
     assert_equal 33, @stat_tracker.count_of_teams
   end
 
-
-  def test_find_goals_allowed #helper
-    skip
-    @stat_tracker.goals_allowed
-  end
-
   def test_best_offense
-    assert_equal "Boston Bruins", @stat_tracker.best_offense
+    assert_equal "Bruins", @stat_tracker.best_offense
   end
 
   def test_worst_offense
-    assert_equal "Pittsburgh Penguins", @stat_tracker.worst_offense
+    assert_equal "Penguins", @stat_tracker.worst_offense
   end
 
   def test_best_defense
-    assert_equal "Boston Bruins", @stat_tracker.best_defense
+    assert_equal "Bruins", @stat_tracker.best_defense
   end
 
   def test_worst_defense
-    assert_equal "Anaheim Ducks", @stat_tracker.worst_defense
+    assert_equal "Ducks", @stat_tracker.worst_defense
   end
 
   def test_highest_scoring_visitor
-    assert_equal "Ottawa Senators", @stat_tracker.highest_scoring_visitor
+    assert_equal "Senators", @stat_tracker.highest_scoring_visitor
   end
 
   def test_highest_scoring_home_team
-    assert_equal "Ottawa Senators", @stat_tracker.highest_scoring_home_team
+    assert_equal "Senators", @stat_tracker.highest_scoring_home_team
   end
 
   def test_lowest_scoring_visitor
-    assert_equal "Pittsburgh Penguins", @stat_tracker.lowest_scoring_visitor
+    assert_equal "Penguins", @stat_tracker.lowest_scoring_visitor
   end
 
   def test_lowest_scoring_home_team
-    assert_equal "Pittsburgh Penguins", @stat_tracker.lowest_scoring_home_team
+    assert_equal "Penguins", @stat_tracker.lowest_scoring_home_team
   end
 
-  def test_avg_goals_scored_at_home #helper
-    @stat_tracker.goals_scored_at_home
+  def test_winningest_team
+    assert_equal "Bruins", @stat_tracker.winningest_team
   end
 
+  def test_best_fans
+    assert_equal "Blackhawks", @stat_tracker.best_fans
+  end
+
+  def test_worst_fans
+    assert_equal ["Red Wings"], @stat_tracker.worst_fans
+  end
 end
