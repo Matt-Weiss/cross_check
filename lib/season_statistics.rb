@@ -1,4 +1,4 @@
-module SeasonStats
+module SeasonStatistics
   def biggest_bust(season)
     team_name_finder(preseason_vs_regular_season(season).first)
   end

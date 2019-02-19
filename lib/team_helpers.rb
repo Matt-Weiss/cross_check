@@ -1,4 +1,4 @@
-module TeamStatsHelpers
+module TeamStatisticsHelpers
 
 
 end

@@ -1,4 +1,4 @@
-module SeasonStatsHelpers
+module SeasonStatisticsHelpers
   def preseason_games(season)
     @preseason_games = []
     games.each do |game|
