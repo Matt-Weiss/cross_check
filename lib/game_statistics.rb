@@ -1,4 +1,4 @@
-module GameStats
+module GameStatistics
 
   def highest_total_score
     goals_per_game = []
