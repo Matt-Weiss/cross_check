@@ -30,32 +30,23 @@ class GameStatsTest < Minitest::Test
   end
 
   def test_percentage_home_wins
-    assert_equal 68.00, @stat_tracker.percentage_home_wins
+    assert_equal 0.68, @stat_tracker.percentage_home_wins
   end
 
   def test_percentage_visitor_wins
-    assert_equal 32.00, @stat_tracker.percentage_visitor_wins
+    assert_equal 0.32, @stat_tracker.percentage_visitor_wins
   end
 
-  def test_gather_game_ids_by_season
-    skip
-    # binding.pry
-  end
 
   def test_count_of_games_by_season
-    assert_equal ({20122013 => 25}), @stat_tracker.count_of_games_by_season
-  end
-
-  def test_goals_per_game_by_season
-    skip
+    assert_equal ({"20122013" => 25}), @stat_tracker.count_of_games_by_season
   end
 
   def test_average_goals_by_season
-    assert_equal ({20122013 => 4.96}), @stat_tracker.average_goals_by_season
+    assert_equal ({"20122013" => 4.96}), @stat_tracker.average_goals_by_season
   end
 
   def test_average_goals_per_game
-    assert_equal 2.48, @stat_tracker.average_goals_per_game
-
+    assert_equal 4.96, @stat_tracker.average_goals_per_game
   end
 end
