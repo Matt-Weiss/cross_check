@@ -8,7 +8,6 @@ module LeagueStatistics
    sorted_goal_stats = all_goals_scored.sort_by do |key, value|
      value
    end.last
-   sorted_goal_stats
    team_name_finder(sorted_goal_stats)
   end
 
@@ -16,7 +15,6 @@ module LeagueStatistics
     sorted_goal_stats = all_goals_scored.sort_by do |key, value|
       value
     end.first
-    sorted_goal_stats
     team_name_finder(sorted_goal_stats)
   end
 

@@ -106,9 +106,9 @@ module LeagueStatisticsHelpers
   end
 
   def team_name_finder(sorted_hash) #helper for 2-11
-    team = teams.find do |team|
+    match_team = teams.find do |team|
       team.team_id == sorted_hash[0]
     end
-    "#{team.team_name}"
+    "#{match_team.team_name}"
   end
 end

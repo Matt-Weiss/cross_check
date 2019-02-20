@@ -9,6 +9,7 @@ require_relative './league_statistics'
 require_relative './league_helpers'
 require_relative './team_statistics'
 require_relative './team_helpers'
+require_relative './team_seasonal_summary_helpers'
 require_relative './season_statistics'
 require_relative './season_helpers'
 
@@ -20,6 +21,7 @@ class StatTracker
   include LeagueStatisticsHelpers
   include TeamStatistics
   include TeamStatisticsHelpers
+  include TeamSeasonalSummaryHelpers
   include SeasonStatistics
   include SeasonStatisticsHelpers
 

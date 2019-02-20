@@ -1,8 +1,6 @@
 require './test/test_helper'
 
-
 class GameTest < Minitest::Test
-
   def setup
     game_path = './data/game_test.csv'
     team_path = './data/team_info.csv'
@@ -13,7 +11,6 @@ class GameTest < Minitest::Test
       teams: team_path,
       game_teams: game_teams_path
     }
-
     @stat_tracker = StatTracker.from_csv(locations)
   end
 
@@ -26,6 +23,5 @@ class GameTest < Minitest::Test
     assert_equal "6", @stat_tracker.games[0].home_team_id
     assert_equal 2, @stat_tracker.games[0].away_goals
     assert_equal 3, @stat_tracker.games[0].home_goals
-
   end
 end
