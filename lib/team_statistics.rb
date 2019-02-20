@@ -1,6 +1,3 @@
-
-require 'pry'
-
 module TeamStatistics
 
   def team_info(team_id) #method 1
@@ -15,64 +12,6 @@ module TeamStatistics
     team_info
   end
 
-  def best_season_helper(team_id) #helper
-    season_hash = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      season_hash[game.season] << game.home_team_id if game.home_team_id == team_id
-      season_hash[game.season] << game.away_team_id if game.away_team_id == team_id
-    end
-    season_hash
-  end
-
-  def season_helper_next(team_id) # total games played per season
-      games_total = Hash.new {|hash, key| hash[key] = []}
-      best_season_helper(team_id).each do |key, value|
-      games_total[key] = value.length
-    end
-    games_total
-  end
-
-  def home_wins_per_season(team_id) #helper
-      home_wins = Hash.new {|hash, key| hash[key] = []}
-      games.each do |game|
-        home_sum = 0
-        if game.home_team_id == team_id && game.outcome.include?("home win")
-        # home_sum += 1
-        home_wins[game.season] << home_sum += 1
-      end
-    end
-    home_wins_total = Hash.new
-    home_wins.each do |key, value|
-      home_wins_total[key] = value.length
-    end
-    home_wins_total
-  end
-
-  def away_wins_per_season(team_id) #helper
-    away_wins = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      away_sum = 0
-      if game.away_team_id == team_id && game.outcome.include?("away win")
-        away_wins[game.season] << away_sum += 1
-      end
-    end
-    away_wins_total = Hash.new
-    away_wins.each do |key, value|
-      away_wins_total[key] = value.length
-    end
-    away_wins_total
-  end
-
-  def sum_of_wins_by_season(team_id) #helper
-    total_sum = home_wins_per_season(team_id).merge(away_wins_per_season(team_id)) {|k, away_value, home_value| away_value + home_value }
-    total_sum
-  end
-
-  def average_win_percentage_by_season(team_id) #helper
-    win_percentages = season_helper_next(team_id).merge(sum_of_wins_by_season(team_id)) {|k, helper_value, sum_value| (sum_value.to_f / helper_value).round(2) * 100 }
-    win_percentages
-  end
-
   def best_season(team_id) #method 2
     sort_by_best_win_percentage = average_win_percentage_by_season(team_id).sort_by {|key, value| value}
     sort_by_best_win_percentage.last[0]
@@ -81,36 +20,6 @@ module TeamStatistics
   def worst_season(team_id) #method 3
     sort_by_worst_win_percentage = average_win_percentage_by_season(team_id).sort_by {|key, value| value}
     sort_by_worst_win_percentage.first[0]
-  end
-
-  def sum_of_games_played_by_team(team_id) #helper
-    total_games = 0
-    games.each do |game|
-      if game.home_team_id == team_id || game.away_team_id == team_id
-        total_games += 1
-      end
-    end
-    total_games
-  end
-
-  def sum_away_wins(team_id) #helper
-    wins = 0
-    games.each do |game|
-      if game.away_team_id == team_id && game.outcome.include?("away win")
-        wins += 1
-      end
-    end
-    wins
-  end
-
-  def sum_all_wins(team_id) #helper
-    wins = 0
-    games.each do |game|
-      if game.home_team_id == team_id && game.outcome.include?("home win")
-        wins +=1
-      end
-    end
-    total_wins = wins + sum_away_wins(team_id)
   end
 
   def average_win_percentage(team_id) #method 4
@@ -124,11 +33,10 @@ module TeamStatistics
     games.each do |game|
       if team_id == game.away_team_id
         goals_by_team << game.away_goals
-      end
-      if team_id == game.home_team_id
+      elsif team_id == game.home_team_id
         goals_by_team << game.home_goals
-     end
-   end
+      end
+    end
    goals_by_team.max
   end
 
@@ -137,84 +45,19 @@ module TeamStatistics
       games.each do |game|
       if team_id == game.away_team_id
         goals_by_team << game.away_goals
-      end
-      if team_id == game.home_team_id
+      elsif team_id == game.home_team_id
       goals_by_team << game.home_goals
       end
     end
     goals_by_team.min
   end
 
-  def favorite_opponent_wins(team_id) #helper
-    home_wins = []
-    away_wins = []
-    games.each do |game|
-      if team_id == game.home_team_id && game.outcome.include?("home win")
-        home_wins << game.away_team_id
-      end
-      if team_id == game.away_team_id && game.outcome.include?("away win")
-        away_wins << game.home_team_id
-      end
-    end
-    total_wins_vs_opponent = home_wins + away_wins
-    total_wins_vs_opponent
-  end
-
-  def favorite_opponent_losses(team_id) #helper
-    home_losses = []
-    away_losses = []
-    games.each do |game|
-      if team_id == game.home_team_id && game.outcome.include?("away win")
-        home_losses << game.away_team_id
-      end
-      if team_id == game.away_team_id && game.outcome.include?("home win")
-        away_losses << game.home_team_id
-      end
-    end
-    total_losses_vs_opponent = home_losses + away_losses
-    total_losses_vs_opponent
-  end
-
-  def total_games_vs_opponents(team_id) #helper
-    games_per_opponent = favorite_opponent_wins(team_id) + favorite_opponent_losses(team_id)
-    games_per_opponent
-  end
-
-  def game_total_each_opponent(team_id) #returns a hash with team id as key, and each value represents total games played with team_id argument
-    teams_and_games = Hash.new {|hash, key| hash[key] = []}
-    total_games_vs_opponents(team_id).each do |team|
-    teams_and_games[team] << team
-  end
-  teams_and_games.each {|key, value| teams_and_games[key] = value.length}
-  teams_and_games
-  end
-
-  def wins_for_each_opponent(team_id) #helper for 7
-    opponent_wins_key = Hash.new {|hash, key| hash[key] = []}
-    favorite_opponent_losses(team_id).each do |team|
-      opponent_wins_key[team] << team
-    end
-    opponent_wins_key.each {|key, value| opponent_wins_key[key] = value.length}
-    opponent_wins_key
-  end
-
-  def opponent_win_percentage(team_id) #helper for 7
-    win_percentage = game_total_each_opponent(team_id).merge(wins_for_each_opponent(team_id)) {|key, games, wins| (wins.to_f/games).round(2) * 100}
-    win_percentage
-  end
-
-  def return_id_of_favorite_opponent(team_id) #helper for 7
-    sorted_percentages = opponent_win_percentage(team_id).sort_by {|key, value| value}
-    opponent_id = sorted_percentages.first[0]
-    opponent_id
-  end
-
   def favorite_opponent(team_id) #method 7
-      name = []
-      opponent_id = return_id_of_favorite_opponent(team_id)
-      teams.find do |team|
+    name = []
+    opponent_id = return_id_of_favorite_opponent(team_id)
+    teams.find do |team|
       if team.team_id == opponent_id
-      name << team.team_name
+        name << team.team_name
       end
     end
     name[0]
@@ -250,64 +93,11 @@ module TeamStatistics
     games.each do |game|
       if team_id == game.away_team_id && game.outcome.include?("home win")
         lost_by << (game.home_goals - game.away_goals)
-      end
-      if team_id == game.home_team_id && game.outcome.include?("away win")
+      elsif team_id == game.home_team_id && game.outcome.include?("away win")
         lost_by << (game.away_goals - game.home_goals)
       end
     end
     lost_by.max
-  end
-
-  def game_count(team_id)#helper method for head to head
-    gather_games = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      if team_id == game.away_team_id
-      gather_games[game.home_team_id] << game.away_team_id
-      end
-      if team_id == game.home_team_id
-      gather_games[game.away_team_id] << game.home_team_id
-      end
-    end
-    gather_games
-  end
-
-  def sum_games_per_team(team_id)#second helper for head to head calculated total games played against all teams for given team id
-    game_sum = game_count(team_id)
-    game_sum.each do |key, value| game_sum[key] = value.length
-    end
-    game_sum
-  end
-
-  def wins_against_all_teams(team_id) #helper for 11
-    wins = Hash.new {|hash, key| hash[key] = [] }
-    games.each do |game|
-      if team_id == game.home_team_id && game.outcome.include?("home win")
-        wins[game.away_team_id] << game.home_team_id
-      end
-      if team_id == game.away_team_id && game.outcome.include?("away win")
-        wins[game.home_team_id] << game.away_team_id
-      end
-    end
-    wins.each do |key, value|
-      wins[key] = value.length
-    end
-    wins
-  end
-
-  def win_percentage_by_team(team_id) #helper for 11
-    game_sum = sum_games_per_team(team_id)
-    wins = wins_against_all_teams(team_id)
-    win_percentages = game_sum.merge(wins) {|key, games, wins| (wins.to_f / games).round(2)}
-  end
-
-  def name_finder(team_id) #helper
-    team_name = []
-    teams.each do |team|
-      if team_id == team.team_id
-        team_name << team.team_name
-      end
-    end
-    team_name[0]
   end
 
   def head_to_head(team_id) #method 11
@@ -319,239 +109,6 @@ module TeamStatistics
     final_head_to_head
   end
 
-  def games_per_regular_season(team_id) #helper
-    collect_games = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      collect_games[game.season] << team_id if game.home_team_id == team_id && game.type.include?("R")
-      collect_games[game.season] << team_id if game.away_team_id == team_id && game.type.include?("R")
-      end
-      collect_games.each do |key, value|
-      collect_games[key] = value.length
-    end
-    collect_games
-  end
-
-  def games_per_preseason(team_id) #helper
-    collect_games = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      collect_games[game.season] << team_id if game.away_team_id == team_id && game.type.include?("P")
-      collect_games[game.season] << team_id if game.home_team_id == team_id && game.type.include?("P")
-    end
-    collect_games.each do |key, value|
-      collect_games[key] = value.length
-    end
-    collect_games
-  end
-
-  def wins_per_regular_season(team_id) #helper
-    wins = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      wins[game.season] << team_id if game.home_team_id == team_id && game.outcome.include?("home win") && game.type.include?("R")
-      wins[game.season] << team_id if game.away_team_id == team_id && game.outcome.include?("away win") && game.type.include?("R")
-    end
-    wins.each do |key, value|
-      wins[key] = value.length
-    end
-    wins
-  end
-
-  def wins_per_preseason(team_id) #helper
-    wins = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      wins[game.season] << team_id if game.home_team_id == team_id && game.outcome.include?("home win") && game.type.include?("P")
-      wins[game.season] << team_id if game.away_team_id == team_id && game.outcome.include?("away win") && game.type.include?("P")
-    end
-      wins.each do |key, value|
-      wins[key] = value.length
-    end
-    wins
-  end
-
-  def win_percentage_per_regular_season(team_id) #helper
-    games = games_per_regular_season(team_id)
-    wins = wins_per_regular_season(team_id)
-    win_percentage = games.merge(wins) do |key, games, wins|
-      (wins.to_f / games).round(2)
-    end
-    win_percentage
-  end
-
-  def win_percentage_per_preseason(team_id) #helper
-    games = games_per_preseason(team_id)
-    wins = wins_per_preseason(team_id)
-    win_percentage = games.merge(wins) do |key, games, wins|
-      (wins.to_f / games).round(2)
-    end
-    win_percentage
-    # final = win_percentage.each do |key, value|
-    #   if win_percentage[key][0] == nil
-    #     win_percentage[key] = 0.0
-    #   end
-    # end
-    # final
-  end
-
-  def hash_of_goals_regular_season(team_id)
-    goals = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-        if game.home_team_id == team_id && game.type.include?("R")
-        goals[game.season] << game.home_goals
-        end
-        if game.away_team_id == team_id && game.type.include?("R")
-        goals[game.season] << game.away_goals
-        end
-      end
-      goals
-    end
-
-
-    def hash_of_goals_preseason(team_id)
-      goals = Hash.new {|hash, key| hash[key] = []}
-      games.each do |game|
-        if game.home_team_id == team_id && game.type.include?("P")
-        goals[game.season] << game.home_goals
-        end
-        if game.away_team_id == team_id && game.type.include?("P")
-        goals[game.season] << game.away_goals
-        end
-      end
-      goals
-    end
-
-
-
-  def total_goals_regular_season(team_id)
-    goals = hash_of_goals_regular_season(team_id)
-    goals.each do |key, value|
-      goals[key] = value.sum
-    end
-    goals
-  end
-
-  def total_goals_preseason(team_id)
-    goals = hash_of_goals_preseason(team_id)
-    goals.each do |key, value|
-      goals[key] = value.sum
-    end
-    goals
-    # final = goals.each do |key, value|
-    #   if goals[key][0] == nil
-    #     goals[key] = 0
-    #   end
-    # end
-    # final
-  end
-
-  def total_goals_against_preseason(team_id)
-    against_goals = Hash.new {|hash, key| hash[key] = []}
-    games.each do |game|
-      if game.home_team_id == team_id && game.type.include?("P")
-      against_goals[game.season] << game.away_goals
-      end
-      if game.away_team_id == team_id && game.type.include?("P")
-      against_goals[game.season] << game.home_goals
-      end
-      end
-      against_goals.each do |key, value|
-      against_goals[key] = value.sum
-      end
-      against_goals
-      # final = against_goals.each do |key, value|
-      #   if against_goals[key][0] == nil
-      #     against_goals[key] = 0
-      #   end
-      # end
-      # final
-    end
-
-    def total_goals_against_regular_season(team_id)
-      against_goals = Hash.new {|hash, key| hash[key] = []}
-      games.each do |game|
-        if game.home_team_id == team_id && game.type.include?("R")
-        against_goals[game.season] << game.away_goals
-        end
-        if game.away_team_id == team_id && game.type.include?("R")
-        against_goals[game.season] << game.home_goals
-        end
-        end
-        against_goals.each do |key, value|
-        against_goals[key] = value.sum
-        end
-        against_goals
-      end
-
-      def total_goals_against_preseason(team_id)
-        against_goals = Hash.new {|hash, key| hash[key] = []}
-        games.each do |game|
-          if game.home_team_id == team_id && game.type.include?("P")
-          against_goals[game.season] << game.away_goals
-          end
-          if game.away_team_id == team_id && game.type.include?("P")
-        against_goals[game.season] << game.home_goals
-        end
-        end
-        against_goals.each do |key, value|
-      against_goals[key] = value.sum
-      end
-      against_goals
-    end
-
-    def average_goals_scored_regular_season(team_id)
-      goal_total = total_goals_regular_season(team_id)
-      games_total = games_per_regular_season(team_id)
-      avg_goals = games_total.merge(goal_total) do |key, games, goals| (goals.to_f / games).round(2)
-      end
-      avg_goals
-    end
-
-    def average_goals_scored_preseason(team_id)
-      goal_total = total_goals_preseason(team_id)
-      games_total = games_per_preseason(team_id)
-      avg_goals = games_total.merge(goal_total) do |key, games, goals| (goals.to_f / games).round(2)
-      end
-      avg_goals
-
-      # final = avg_goals.each do |key, value|
-      #   if avg_goals[key][0] == nil
-      #     avg_goals[key] = 0.0
-      #   end
-      # end
-      # final
-    end
-
-    def average_goals_against_regular_season(team_id)
-      goal_total = total_goals_against_regular_season(team_id)
-      games_total = games_per_regular_season(team_id)
-      avg_goals = games_total.merge(goal_total) do |key, games, goals| (goals.to_f / games).round(2)
-      end
-      avg_goals
-    end
-
-    def average_goals_against_preseason(team_id)
-      goal_total= total_goals_against_preseason(team_id)
-      games_total = games_per_preseason(team_id)
-      avg_goals = games_total.merge(goal_total) do |key, games, goals| (goals.to_f / games).round(2)
-      end
-      avg_goals
-      # final = avg_goals.each do |key, value|
-      #   if avg_goals[key] == []
-      #     avg_goals[key] = 0.0
-      #   end
-      # end
-      # final
-    end
-
-    def find_seasons(team_id)
-    seasons = []
-    games.each do |game|
-      if game.away_team_id == team_id ||
-        game.home_team_id == team_id
-        seasons << game.season
-      end
-    end
-    seasons.uniq
-  end
-
   def seasonal_summary(team_id)
     seasons = find_seasons(team_id)
     season_summary_hash = {}
@@ -560,37 +117,31 @@ module TeamStatistics
           preseason: {
             :win_percentage=> if win_percentage_per_preseason(team_id)[season] == []
               0.0
-            else
-              win_percentage_per_preseason(team_id)[season]
+            else win_percentage_per_preseason(team_id)[season]
             end,
             :total_goals_scored=> if total_goals_preseason(team_id)[season] == []
               0
-            els
-              total_goals_preseason(team_id)[season]
+            else total_goals_preseason(team_id)[season]
             end,
             :total_goals_against=> if total_goals_against_preseason(team_id)[season] == []
               0
-            else
-              total_goals_against_preseason(team_id)[season]
+            else total_goals_against_preseason(team_id)[season]
             end,
             :average_goals_scored=> if average_goals_scored_preseason(team_id)[season] == []
               0.0
-            else
-              average_goals_scored_preseason(team_id)[season]
+            else average_goals_scored_preseason(team_id)[season]
             end,
             :average_goals_against=> if average_goals_against_preseason(team_id)[season] == []
-            0.0
-            else
-              average_goals_against_preseason(team_id)[season]
+              0.0
+            else average_goals_against_preseason(team_id)[season]
             end},
           :regular_season => {
             :win_percentage=> win_percentage_per_regular_season(team_id)[season],
             :total_goals_scored=>total_goals_regular_season(team_id)[season],
             :total_goals_against=>total_goals_against_regular_season(team_id)[season],
             :average_goals_scored=>average_goals_scored_regular_season(team_id)[season],
-            :average_goals_against=>average_goals_against_regular_season(team_id)[season]}
-          }
-        end
+            :average_goals_against=>average_goals_against_regular_season(team_id)[season]}}
+      end
       season_summary_hash
-    end
+  end
 end
