@@ -1,4 +1,5 @@
 module TeamSeasonalSummaryHelpers
+
   def games_per_regular_season(team_id) #helper
     collect_games = Hash.new {|hash, key| hash[key] = []}
     games.each do |game|
@@ -144,43 +145,5 @@ module TeamSeasonalSummaryHelpers
       (goals.to_f / games).round(2)
     end
     avg_goals
-  end
-
-  def average_goals_scored_preseason(team_id)
-    goal_total = total_goals_preseason(team_id)
-    games_total = games_per_preseason(team_id)
-    avg_goals = games_total.merge(goal_total) do |key, games, goals|
-      (goals.to_f / games).round(2)
-    end
-    avg_goals
-  end
-
-  def average_goals_against_regular_season(team_id)
-    goal_total = total_goals_against_regular_season(team_id)
-    games_total = games_per_regular_season(team_id)
-    avg_goals = games_total.merge(goal_total) do |key, games, goals|
-      (goals.to_f / games).round(2)
-    end
-    avg_goals
-  end
-
-  def average_goals_against_preseason(team_id)
-    goal_total= total_goals_against_preseason(team_id)
-    games_total = games_per_preseason(team_id)
-    avg_goals = games_total.merge(goal_total) do |key, games, goals|
-      (goals.to_f / games).round(2)
-    end
-    avg_goals
-  end
-
-  def find_seasons(team_id)
-  seasons = []
-    games.each do |game|
-      if game.away_team_id == team_id ||
-        game.home_team_id == team_id
-        seasons << game.season
-      end
-    end
-    seasons.uniq
   end
 end
