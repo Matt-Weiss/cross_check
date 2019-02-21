@@ -7,9 +7,9 @@ module TeamStatisticsHelpers
       season_hash[game.season] << game.away_team_id if game.away_team_id == team_id
     end
     season_hash
-  end
+  end#counts number of games played per season by pushing in team id's.
 
-  def season_helper_next(team_id) # total games played per season
+  def season_helper_next(team_id) #team id's counted to figure out number of games played
       games_total = Hash.new {|hash, key| hash[key] = []}
       best_season_helper(team_id).each do |key, value|
       games_total[key] = value.length
@@ -17,7 +17,7 @@ module TeamStatisticsHelpers
     games_total
   end
 
-  def home_wins_per_season(team_id) #helper
+  def home_wins_per_season(team_id) #helper for best season
       home_wins = Hash.new {|hash, key| hash[key] = []}
       games.each do |game|
         home_sum = 0
@@ -32,7 +32,7 @@ module TeamStatisticsHelpers
     home_wins_total
   end
 
-  def away_wins_per_season(team_id) #helper
+  def away_wins_per_season(team_id) #helper for best and worst season
     away_wins = Hash.new {|hash, key| hash[key] = []}
     games.each do |game|
       away_sum = 0
@@ -47,17 +47,17 @@ module TeamStatisticsHelpers
     away_wins_total
   end
 
-  def sum_of_wins_by_season(team_id) #helper
+  def sum_of_wins_by_season(team_id) #helper for best and worst season, merges home and away wins to give win total in order to calculate win percentage.
     total_sum = home_wins_per_season(team_id).merge(away_wins_per_season(team_id)) {|k, away_value, home_value| away_value + home_value }
     total_sum
   end
 
-  def average_win_percentage_by_season(team_id) #helper
+  def average_win_percentage_by_season(team_id) #helper for avg win percentage
     win_percentages = season_helper_next(team_id).merge(sum_of_wins_by_season(team_id)) {|k, helper_value, sum_value| (sum_value.to_f / helper_value).round(2) * 100 }
     win_percentages
   end
 
-  def sum_of_games_played_by_team(team_id) #helper
+  def sum_of_games_played_by_team(team_id) #helper for average_win_percentage
     total_games = 0
     games.each do |game|
       if game.home_team_id == team_id || game.away_team_id == team_id
@@ -67,7 +67,7 @@ module TeamStatisticsHelpers
     total_games
   end
 
-  def sum_away_wins(team_id) #helper
+  def sum_away_wins(team_id) #helper win percentage method
     wins = 0
     games.each do |game|
       if game.away_team_id == team_id && game.outcome.include?("away win")
@@ -77,7 +77,7 @@ module TeamStatisticsHelpers
     wins
   end
 
-  def sum_all_wins(team_id) #helper
+  def sum_all_wins(team_id) #helper for avg win percentage
     wins = 0
     games.each do |game|
       if game.home_team_id == team_id && game.outcome.include?("home win")
@@ -87,7 +87,7 @@ module TeamStatisticsHelpers
     wins + sum_away_wins(team_id)
   end
 
-  def favorite_opponent_wins(team_id) #helper
+  def favorite_opponent_wins(team_id) #helper for favorite_opponent method
     home_wins = []
     away_wins = []
     games.each do |game|
@@ -102,7 +102,7 @@ module TeamStatisticsHelpers
     total_wins_vs_opponent
   end
 
-  def favorite_opponent_losses(team_id) #helper
+  def favorite_opponent_losses(team_id) #helper for favorite_opponent method
     home_losses = []
     away_losses = []
     games.each do |game|
@@ -117,7 +117,7 @@ module TeamStatisticsHelpers
     total_losses_vs_opponent
   end
 
-  def total_games_vs_opponents(team_id) #helper
+  def total_games_vs_opponents(team_id) #helper for favorite_opponent method
     games_per_opponent = favorite_opponent_wins(team_id) + favorite_opponent_losses(team_id)
     games_per_opponent
   end
@@ -136,7 +136,7 @@ module TeamStatisticsHelpers
     win_percentage
   end
 
-  def return_id_of_favorite_opponent(team_id) #helper for 7
+  def return_id_of_favorite_opponent(team_id) #helper for 7,
     sorted_percentages = opponent_win_percentage(team_id).sort_by {|key, value| value}
     opponent_id = sorted_percentages.first[0]
     opponent_id

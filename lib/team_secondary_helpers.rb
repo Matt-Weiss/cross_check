@@ -1,6 +1,6 @@
 module TeamSecondaryHelpers
 
-  def name_finder(team_id) #helper
+  def name_finder(team_id) #helper when needing to change team id to team name
     team_name = []
     teams.each do |team|
       if team_id == team.team_id
@@ -11,7 +11,7 @@ module TeamSecondaryHelpers
   end
 
 
-  def game_total_each_opponent(team_id) #returns a hash with team id as key, and each value represents total games played with team_id argument
+  def game_total_each_opponent(team_id) #returns a hash with team id as key, and each value represents total games played with team_id argument, head to head helper
     teams_and_games = Hash.new {|hash, key| hash[key] = []}
     total_games_vs_opponents(team_id).each do |team|
       teams_and_games[team] << team
@@ -20,7 +20,7 @@ module TeamSecondaryHelpers
     teams_and_games
   end
 
-  def game_count(team_id)#helper method for head to head
+  def game_count(team_id)#helps above method to by gathering team_ids in array to be counted to figure out amount of games played by  each team
     gather_games = Hash.new {|hash, key| hash[key] = []}
     games.each do |game|
       if team_id == game.away_team_id
@@ -40,7 +40,7 @@ module TeamSecondaryHelpers
     game_sum
   end
 
-  def wins_against_all_teams(team_id) #helper for 11
+  def wins_against_all_teams(team_id) #helper for head to head calculates wins against all teams for given team id.
     wins = Hash.new {|hash, key| hash[key] = [] }
     games.each do |game|
       if team_id == game.home_team_id && game.outcome.include?("home win")
@@ -56,7 +56,7 @@ module TeamSecondaryHelpers
     wins
   end
 
-  def win_percentage_by_team(team_id) #helper for 11
+  def win_percentage_by_team(team_id) #helper for 11/ head to head
     game_sum = sum_games_per_team(team_id)
     all_wins = wins_against_all_teams(team_id)
     game_sum.merge(all_wins) {|key, games, wins| (wins.to_f / games).round(2)}
